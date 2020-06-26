@@ -1,4 +1,4 @@
-# udacity_path_planning
+# udacity_highway_driving
 
 ## Goal
 
