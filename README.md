@@ -1,25 +1,43 @@
-# CarND-Path-Planning-Project
+# udacity_path_planning
 
-This repository contains C++ code for implementation of Path Planner. This path of waypoints is used to fed to the controller module of a car running on a highway. This task was implemented to partially fulfill Term-III goals of Udacity's self driving car nanodegree program.
+## Gaol
 
+The goal of this project is to build a path planner that creates smooth, safe trajectories for the car to follow. The highway track has other vehicles, all going different speeds, but approximately obeying the 50 MPH speed limit.
 
-## Background
+The car transmits its location, along with its sensor fusion data, which estimates the location of all the vehicles on the same side of the road.
 
-A critical module in the working of a self driving car system is the path planning module. It is essentially the brain of the whole eco system. Path planning module derives the path to be followed by car ahead of time. This path has information on mostly position and velocity of the car in the future. This information acts as an input to the controller module. The controller modules then ensures there is minimum deviation in the planned path and the executed path.
+## Point Paths
+The path planner should output a list of x and y global map coordinates. Each pair of x and y coordinates is a point, and all of the points together form a trajectory. You can use any number of points that you want, but the x list should be the same length as the y list.
+
+Every 20 ms the car moves to the next point on the list. The car's new rotation becomes the line between the previous waypoint and the car's new location.
+
+The car moves from point to point perfectly, so you don't have to worry about building a controller for this project.
+
+The animation above shows how the car moves and rotates through a given list of points.
+
+## Velocity
+The velocity of the car depends on the spacing of the points. Because the car moves to a new waypoint every 20ms, the larger the spacing between points, the faster the car will travel. The speed goal is to have the car traveling at (but not above) the 50 MPH speed limit as often as possible. But there will be times when traffic gets in the way.
+
+## Getting Started
+Start by simply trying to move the car forward in a straight line at a constant 50 MPH velocity. Use the car's (x, y) localization information and its heading direction to create a simple, straight path that is drawn directly in front of the car.
+
+## Reflection
+
+Path Planning module is one of the critical module in the working of self driving car system. No doubt its the brain of the whole eco system. Path planning module derives the path to be followed by car ahead of time. This path has information on mostly position and velocity of the car in the future. This information acts as an input to the controller module. The controller modules then ensures there is minimum deviation in the planned path and the executed path.
 
 Following parameters serve as an input to the path planning module:
-  1. Map of the environment with start and goal location. This is the global map having information on the best possible route from the start to the destination.
-  2. Local map of th environment. This map is a subset and a more detailed version of the global map and has information about the landmarks in the area surrounded by car. This map changes when the car moves.
+  1. Map of the environment with start and goal location. This is the global map having information on the best possible route from the start to the destination the car can have.
+  2. Local map of th environment. This map a more detailed version of the global map and has information about the landmarks in the area surrounded by car. This map changes when the car moves.
   3. Position of the other vehicles, pedestrians, animals, traffic lights, etc. in the local map. This information is deduced by creating point clouds from the data received from sensor fusion module.
-  4. Current position of the car in the local map. This is derived by the localisation module.
+  4. Localization module derived the current position of the car in the local map
   
-Information from all the inputs is then used to perfom following tasks:
+Information gathered from all the inputs is then used to perfom following tasks:
   1. Prediction - This involves predicting the behavior of car and other elements in the surrounding
-  2. Behavior planning - This involves plannning the possible states of the car. For e.g.: Acceleration, Deceleration, lane change, left and right turns, etc.
+  2. Behavior planning - This involves plannning the possible states of the car. For e.g.: Acceleration, Deceleration(Retardation), lane change, left and right turns, etc.
   3. Trajectory planning - This involves determining the trajectory of the car for a few meters ahead of it based on the speed limit, traffic and capabilities of the car.
   
 
-## Working of Path Planning Module
+## Path Planning Module Working
 
 Path planner assumes that the controller module of car is loss less and that it follows the trajectory perfectly. Hence, a working implementation of path planner is responsible for:
 
@@ -28,9 +46,6 @@ Path planner assumes that the controller module of car is loss less and that it 
   3. Updation of the path in real time based on changes in the environment
 
 
-## Project Goal
-
-The goal of this project was to design a path planner that is able to create smooth, safe paths for the car to follow along a 3 lane highway with traffic. A successful path planner should be able to keep inside its lane, avoid hitting other cars, and pass slower moving traffic all by using localization, sensor fusion, and map data.
 
 
 ## Project Implementation
@@ -39,33 +54,32 @@ Simulation of a circular track was achieved in the [Udacity's self driving car s
 
 ### Main car's localization Data (No Noise)
 
-("x") The car's x position in map coordinates
+["x"] The car's x position in map coordinates
 
-("y") The car's y position in map coordinates
+["y"] The car's y position in map coordinates
 
-("s") The car's s position in frenet coordinates
+["s"] The car's s position in frenet coordinates
 
-("d") The car's d position in frenet coordinates
+["d"] The car's d position in frenet coordinates
 
-("yaw") The car's yaw angle in the map
+["yaw"] The car's yaw angle in the map
 
-("speed") The car's speed in MPH
-
+["speed"] The car's speed in MPH
 ### Previous path data given to the Planner
 
 //Note: Return the previous list but with processed points removed, can be a nice tool to show how far along the path has processed since last time.
 
-("previous_path_x") The previous list of x points previously given to the simulator
+["previous_path_x"] The previous list of x points previously given to the simulator
 
-("previous_path_y") The previous list of y points previously given to the simulator
+["previous_path_y"] The previous list of y points previously given to the simulator
 
-Previous path's end s and d values
-("end_path_s") The previous list's last point's frenet s value
+### Previous path's end s and d values
+["end_path_s"] The previous list's last point's frenet s value
 
-("end_path_d") The previous list's last point's frenet d value
+["end_path_d"] The previous list's last point's frenet d value
 
-Sensor Fusion Data, a list of all other car's attributes on the same side of the road. (No Noise)
-("sensor_fusion") A 2d vector of cars and then that car's (car's unique ID, car's x position in map coordinates, car's y position in map coordinates, car's x velocity in m/s, car's y velocity in m/s, car's s position in frenet coordinates, car's d position in frenet coordinates).
+### Sensor Fusion Data, a list of all other car's attributes on the same side of the road. (No Noise)
+["sensor_fusion"] A 2d vector of cars and then that car's (car's unique ID, car's x position in map coordinates, car's y position in map coordinates, car's x velocity in m/s, car's y velocity in m/s, car's s position in frenet coordinates, car's d position in frenet coordinates).
 
 The final implementation consisted of following major steps:
 
@@ -122,12 +136,11 @@ Path planner was used to drive car with a maximum speed of 48 MPH along the high
 
 ![Car prepare overtake right](https://raw.githubusercontent.com/sohonisaurabh/CarND-Path-Planning-Project/master/image-resources/car-prepare-overtake-right.PNG)
 
-The was able to drive for more than 4.32 miles to meet the rubric specification of this project.
+The car was able to drive for more than 4.32 miles to meet the rubric specification of this project.
 
 Detailed insight into features of the simulator and implementation is demonstrated in this [Path Planning demo video](https://youtu.be/tg2NlXvlQYo).
 
   
-## Steps for building the project
 
 ### Dependencies
 
@@ -176,14 +189,3 @@ Detailed insight into features of the simulator and implementation is demonstrat
 
 * Simulator. You can download these from the [Udacity simulator releases tab](https://github.com/udacity/self-driving-car-sim/releases).
 
-### Running the project in Ubuntu
-
-  1. Check the dependencies section for installation of gcc, g++, cmake, make, uWebsocketIO API, CppAd and Ipopt library.
-  
-  2. Manually build the project and run using:
-    a. mkdir build && cd build
-    b. cmake ..
-    c. make
-    d. ./path-planning
-    
-  3. Run the Udacity simulator and check the results
