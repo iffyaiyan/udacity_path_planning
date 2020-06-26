@@ -1,7 +1,7 @@
-#include <fstream>
 #include <math.h>
-#include <uWS/uWS.h>
+#include <fstream>
 #include <chrono>
+#include <uWS/uWS.h>
 #include <iostream>
 #include <thread>
 #include <vector>
@@ -20,7 +20,7 @@ constexpr double pi() { return M_PI; }
 double deg2rad(double x) { return x * pi() / 180; }
 double rad2deg(double x) { return x * 180 / pi(); }
 
-// Checks if the SocketIO event has JSON data.
+// Checking if the SocketIO event has JSON data.
 // If there is data the JSON object in string format will be returned,
 // else the empty string "" will be returned.
 string hasData(string s) {
@@ -42,7 +42,7 @@ double distance(double x1, double y1, double x2, double y2)
 int ClosestWaypoint(double x, double y, const vector<double> &maps_x, const vector<double> &maps_y)
 {
 
-	double closestLen = 100000; //large number
+	double closestLen = 100000; //larger number
 	int closestWaypoint = 0;
 
 	for(int i = 0; i < maps_x.size(); i++)
@@ -87,7 +87,7 @@ int NextWaypoint(double x, double y, double theta, const vector<double> &maps_x,
   return closestWaypoint;
 }
 
-// Transform from Cartesian x,y coordinates to Frenet s,d coordinates
+// Transforming from Cartesian x,y coordinates to Frenet s,d coordinates
 vector<double> getFrenet(double x, double y, double theta, const vector<double> &maps_x, const vector<double> &maps_y)
 {
 	int next_wp = NextWaypoint(x,y, theta, maps_x,maps_y);
@@ -111,7 +111,7 @@ vector<double> getFrenet(double x, double y, double theta, const vector<double> 
 
 	double frenet_d = distance(x_x,x_y,proj_x,proj_y);
 
-	//see if d value is positive or negative by comparing it to a center point
+	//check if d value is positive or negative by comparing it to a center point
 
 	double center_x = 1000-maps_x[prev_wp];
 	double center_y = 2000-maps_y[prev_wp];
@@ -123,7 +123,7 @@ vector<double> getFrenet(double x, double y, double theta, const vector<double> 
 		frenet_d *= -1;
 	}
 
-	// calculate s value
+	// calculating s value
 	double frenet_s = 0;
 	for(int i = 0; i < prev_wp; i++)
 	{
@@ -136,7 +136,7 @@ vector<double> getFrenet(double x, double y, double theta, const vector<double> 
 
 }
 
-// Transform from Frenet s,d coordinates to Cartesian x,y
+// Transforming from Frenet s,d coordinates to Cartesian x,y coordinates
 vector<double> getXY(double s, double d, const vector<double> &maps_s, const vector<double> &maps_x, const vector<double> &maps_y)
 {
 	int prev_wp = -1;
@@ -167,7 +167,7 @@ vector<double> getXY(double s, double d, const vector<double> &maps_s, const vec
 int main() {
   uWS::Hub h;
 
-  // Load up map values for waypoint's x,y,s and d normalized normal vectors
+  // Loading up map values for waypoint's x,y,s and d normalized normal vectors
   vector<double> map_waypoints_x;
   vector<double> map_waypoints_y;
   vector<double> map_waypoints_s;
@@ -208,7 +208,7 @@ int main() {
                      uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
     // The 4 signifies a websocket message
-    // The 2 signifies a websocket event
+    // While 2 signifies a websocket event
     //auto sdata = string(data).substr(0, length);
     //cout << sdata << endl;
     if (length && length > 2 && data[0] == '4' && data[1] == '2') {
@@ -251,13 +251,13 @@ int main() {
             const double lane_width = 4.0;
             // Time taken by simulator to travel from current to next waypoint - 20 ms
             const double simulator_reach_time = 0.02;
-            //Converter to convert velocity from mph to m/s
+            //Converter converting velocity from mph to m/s
             const double velocity_mph_to_ms_conv = 1609.344 / 3600;
 
             //Speed limit constraints
             //Speed limit
             const double safe_speed_limit = 48 * velocity_mph_to_ms_conv;
-            //Minimum speed to ensure path smoother spline library gets coordinates in ascending order
+            //Minimum speed to ensure so that path smoother spline library gets coordinates in ascending order
             const double minimum_speed_limit = 3 * velocity_mph_to_ms_conv;
 
             //Safe distance between cars constraints
@@ -281,7 +281,7 @@ int main() {
             }
 
             /** PREDICTION COMPONENT
-              Detects presence of cars ahead in current and ahead and behind in other lanes and within safe
+              Detecting presence of cars ahead in current and ahead and behind in other lanes and within safe
               determined distance range
             */
             //Flag for prediction of cars in current lane of car and other lanes
@@ -311,7 +311,7 @@ int main() {
 		            continue;
 	            }
 
-              //Calculate the velocity and predicted Frenet s coordinate of car
+              //Calculating the velocity and predicted Frenet s coordinate of car
               double o_car_vel = sqrt(pow(o_car_vx, 2) + pow(o_car_vy, 2));
               double o_car_s_ahead = o_car_s + (o_car_vel * simulator_reach_time * previous_size);
 
@@ -338,12 +338,12 @@ int main() {
       	      }
             }
 
-            /** BEHAVIOR PLANNER COMPONENT
-              Deducts the correct behavior the car should follow. Following are the defined behaviors:
-              1. Continue in current lane and accelerate reaching speed limit
-              2. Slow down in current lane in order to avoid collision with car ahead
-              3. Change lane to left with current speed if not in leftmost lane
-              4. Change lane to right with current speed if not in rightmost lane
+            /** BEHAVIOR PLANNING COMPONENT
+              Deducting the correct behavior the car should follow. Following are the defined behaviors:
+              1. Continuing in current lane and accelerate reaching speed limit
+              2. Slowing down in current lane in order to avoid collision with car ahead
+              3. Changing lane to left with current speed if not in leftmost lane
+              4. Changing lane to right with current speed if not in rightmost lane
             */
 
             //Car ahead is getting closer
@@ -363,11 +363,11 @@ int main() {
                 intended_velocity += 0.5 * velocity_mph_to_ms_conv;
             }
             
-            //Cap the speed of car to safe speed limit slightly less than speed limit
+            //Capping the speed of car to safe speed limit slightly less than speed limit
             if (intended_velocity >= safe_speed_limit) {
               intended_velocity = safe_speed_limit;
             }
-            //Minimum speed of car is ensured to avoid spline library exception
+            //Ensuring Minimum speed of car to avoid spline library exception
             if (intended_velocity <= minimum_speed_limit) {
               intended_velocity = minimum_speed_limit;
             }
@@ -387,7 +387,7 @@ int main() {
             std::vector<double> anchor_x_local;
             std::vector<double> anchor_y_local;
 
-            //Step 1 - Start point is car's current position or previous path
+            //Step 1 - Starting point is car's current position or previous path
             double current_yaw_rad;
             double tmp_x_1;
             double tmp_y_1;
@@ -418,7 +418,7 @@ int main() {
               current_yaw_rad = deg2rad(car_yaw);
             }
 
-            //Step 2 - Set lookahead distance and anchors
+            //Step 2 - Setting lookahead distance and anchors
             //This is 30 meters
             double lookahead_weight = 30;
             int num_lookahead_steps = 3;
@@ -435,7 +435,7 @@ int main() {
                 anchor_y.push_back(tmp_global_xy[1]);
             }
 
-            //Step 4 - Convert anchor points to local coordinates in order to feed it to spline and
+            //Step 4 - Converting anchor points to local coordinates in order to feed it to spline and
             //generate waypoints along the path to anchor
 
             double tmp_diff_x;
@@ -456,11 +456,11 @@ int main() {
               anchor_y_local.push_back(tmp_local_y);
             }
 
-            //Step 5 - Initialize a spline and set local anchor points to it
+            //Step 5 - Initializing a spline and set local anchor points to it
             tk::spline sp;
             sp.set_points(anchor_x_local, anchor_y_local);
 
-            //Step 7 - Create waypoints in local coordinate  system
+            //Step 7 - Creating waypoints in local coordinate  system
             // i. Determine the number of waypoints that can fit between 2 anchor points
             //         using velocity and the lookahead distance
             // ii. Generate x value on the same straight line as vehicle x
@@ -490,7 +490,7 @@ int main() {
               next_y_vals.push_back(previous_path_y[i]);
             }
 
-            //Step 8 - Convert waypoints from local to global coordinates
+            //Step 8 - Converting waypoints from local to global coordinates
 
             for (int i = 0; i < waypoint_steps - previous_size; i++) {
               waypoint_x = waypoints_x_local[i] * cos(current_yaw_rad) - waypoints_y_local[i] * sin(current_yaw_rad);
