@@ -1,6 +1,6 @@
 # udacity_path_planning
 
-## Gaol
+## Goal
 
 The goal of this project is to build a path planner that creates smooth, safe trajectories for the car to follow. The highway track has other vehicles, all going different speeds, but approximately obeying the 50 MPH speed limit.
 
@@ -138,7 +138,7 @@ Path planner was used to drive car with a maximum speed of 48 MPH along the high
 
 The car was able to drive for more than 4.32 miles to meet the rubric specification of this project.
 
-Detailed insight into features of the simulator and implementation is demonstrated in this [Path Planning demo video](https://youtu.be/tg2NlXvlQYo).
+
 
   
 
@@ -169,23 +169,15 @@ Detailed insight into features of the simulator and implementation is demonstrat
     git checkout e94b6e1
     ```
     Some function signatures have changed in v0.14.x.
-    
-* Fortran Compiler
-  * Mac: `brew install gcc` (might not be required)
-  * Linux: `sudo apt-get install gfortran`. Additionally you have also have to install gcc and g++, `sudo apt-get install gcc g++`. Look in [this Dockerfile](https://github.com/udacity/CarND-MPC-Quizzes/blob/master/Dockerfile) for more info.
-  
-* [Ipopt](https://projects.coin-or.org/Ipopt)
-  * If challenges to installation are encountered (install script fails).  Please review this thread for tips on installing Ipopt.
-  * Mac: `brew install ipopt`
-  * Linux
-    * You will need a version of Ipopt 3.12.1 or higher. The version available through `apt-get` is 3.11.x. If you can get that version to work great but if not there's a script `install_ipopt.sh` that will install Ipopt. You just need to download the source from the Ipopt [releases page](https://www.coin-or.org/download/source/Ipopt/).
-    * Then call `install_ipopt.sh` with the source directory as the first argument, ex: `sudo bash install_ipopt.sh Ipopt-3.12.1`. 
-  * Windows: If you can use the Linux subsystem and follow the Linux instructions or use Docker environment.
-  
-* [CppAD](https://www.coin-or.org/CppAD/)
-  * Mac: `brew install cppad`
-  * Linux `sudo apt-get install cppad` or equivalent.
-  * Windows: If you can use the Linux subsystem and follow the Linux instructions or use Docker environment.
 
 * Simulator. You can download these from the [Udacity simulator releases tab](https://github.com/udacity/self-driving-car-sim/releases).
+
+
+## Tips
+
+A really helpful resource for doing this project and creating smooth trajectories was using http://kluge.in-chemnitz.de/opensource/spline/, the spline function is in a single hearder file is really easy to use.
+
+
+## How to write a README
+A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
 
